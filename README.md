@@ -58,4 +58,5 @@ Se você utiliza o **Visual Studio Code**:
 
 ## 📜 Licença
 
-Este projeto é de uso livre para fins educacionais e de estudo. Sinta-se à vontade para clonar, modificar e melhorar!
+Este projeto é de uso livre para fins educacionais e de estudo. Sinta-se à vontade para clonar, modificar e melhorar! Feito por Francisco Dantas.
+
