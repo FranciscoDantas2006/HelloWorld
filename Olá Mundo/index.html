@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Olá Mundo!</title>
+    <style>
+        /* Reset básico e centralização total na tela */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #74ebd5, #9ecefa);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        /* Container do Carrossel */
+        .carousel-container {
+            position: relative;
+            width: 80%;
+            max-width: 600px;
+            height: 250px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        /* Área dos Slides */
+        .carousel-slides {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        /* Cada slide individual */
+        .slide {
+            min-width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+        }
+
+        /* Estilização dos textos */
+        .phrase {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .language {
+            font-size: 1rem;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* Botões de navegação (Setas) */
+        .nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #333;
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: background 0.3s, opacity 0.3s;
+            opacity: 0.7;
+            z-index: 10;
+        }
+
+        .nav-btn:hover {
+            background: #000;
+            opacity: 1;
+        }
+
+        .prev { left: 15px; }
+        .next { right: 15px; }
+
+        /* Indicadores (Bolinhas na parte inferior) */
+        .dots-container {
+            position: absolute;
+            bottom: 15px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            background: #bbb;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .dot.active {
+            background: #333;
+            transform: scale(1.2);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="carousel-container">
+        <button class="nav-btn prev" onclick="moveSlide(-1)">&#10094;</button>
+        <button class="nav-btn next" onclick="moveSlide(1)">&#10095;</button>
+
+        <div class="carousel-slides" id="carouselSlides">
+            <div class="slide">
+                <div class="phrase">Olá, Mundo!</div>
+                <div class="language">Português</div>
+            </div>
+            <div class="slide">
+                <div class="phrase">Hello, World!</div>
+                <div class="language">Inglês</div>
+            </div>
+            <div class="slide">
+                <div class="phrase">¡Hola, Mundo!</div>
+                <div class="language">Espanhol</div>
+            </div>
+            <div class="slide">
+                <div class="phrase">Bonjour, le Monde!</div>
+                <div class="language">Francês</div>
+            </div>
+            <div class="slide">
+                <div class="phrase">Ciao, Mondo!</div>
+                <div class="language">Italiano</div>
+            </div>
+            <div class="slide">
+                <div class="phrase">Hallo, Welt!</div>
+                <div class="language">Alemão</div>
+            </div>
+            <div class="slide">
+                <div class="phrase">こんにちは世界 !</div>
+                <div class="language">Japonês (Konnichiwa sekai)</div>
+            </div>
+        </div>
+
+        <div class="dots-container" id="dotsContainer"></div>
+    </div>
+
+    <script>
+        const slides = document.getElementById('carouselSlides');
+        const slideCount = document.querySelectorAll('.slide').length;
+        const dotsContainer = document.getElementById('dotsContainer');
+        let currentIndex = 0;
+
+        // Criar as bolinhas dinamicamente de acordo com o número de slides
+        for (let i = 0; i < slideCount; i++) {
+            const dot = document.createElement('div');
+            dot.classList.add('dot');
+            if (i === 0) dot.classList.add('active');
+            dot.addEventListener('click', () => goToSlide(i));
+            dotsContainer.appendChild(dot);
+        }
+
+        const dots = document.querySelectorAll('.dot');
+
+        // Função para atualizar a posição do carrossel e as bolinhas
+        function updateCarousel() {
+            slides.style.transform = `translateX(-${currentIndex * 100}%)`;
+            
+            dots.forEach((dot, index) => {
+                if (index === currentIndex) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        }
+
+        // Função para os botões Próximo e Anterior
+        function moveSlide(direction) {
+            currentIndex += direction;
+            
+            // Loop do carrossel (se passar do fim, volta pro começo e vice-versa)
+            if (currentIndex >= slideCount) {
+                currentIndex = 0;
+            } else if (currentIndex < 0) {
+                currentIndex = slideCount - 1;
+            }
+            
+            updateCarousel();
+        }
+
+        // Função para clicar direto na bolinha
+        function goToSlide(index) {
+            currentIndex = index;
+            updateCarousel();
+        }
+
+        // Opcional: Passar slide automaticamente a cada 4 segundos
+        setInterval(() => {
+            moveSlide(1);
+        }, 4000);
+    </script>
+
+</body>
+</html>
